@@ -9,6 +9,6 @@ It scales sorta-kinda, so you can put it on a tablet (untested) or laptop or tur
 
 There's an APK to install on an android, and I pulled the HTML out if you want to just copy to a folder and look at it in a browser.
 
-I run it on a Pixel 3A, rooted, with LineageOS, using APPC for charging management so I can keep it on a charging stand 24/7 without it blowing up.
+I run it on a Pixel 3A, rooted, with LineageOS, using AccA (appstore) for charging management so I can keep it on a charging stand 24/7 without it blowing up.
 
 I also use a very cool app called KinScreen (appstore) to keep the screen on for extended periods while I'm messing with the radios. Recommended!
