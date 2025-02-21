@@ -54,25 +54,6 @@
 	</script>
 
 
-    <script>
-    function getOrientation() {
-        return window.innerWidth > window.innerHeight ? "landscape" : "portrait";
-    }
-    
-    function handleOrientationChange() {
-        const orientation = getOrientation();
-        console.log("Current orientation:", orientation);
-        // Perform actions based on orientation, e.g., adjust layout
-    }
-    
-    // Initial check
-    handleOrientationChange();
-    
-    // Listen for orientation changes (resize event)
-    window.addEventListener("resize", handleOrientationChange);
-
-    </script>
-
 
     <style>
     /**/
@@ -131,7 +112,79 @@
 <hr>
 <div id="clockLocal" class="clockLocal"></div>
 <p class="lastline">Local time -- <span id="dayndate"></span></p>
-   
+
+<div id="N0NBHimageV"><center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarn0nbh.php"></a>
+</center>
+</div>
+
+<div id="N0NBHimageH"><center>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhfpic.php"></a>
+</center>
+</div>
+
+<p><span style="color:green;">Good</span>&nbsp;<span style="color:yellow;">meh</span>&nbsp;<span style="color:red;">Bad</span></p>
+<div align="left">
+<p>
+<pre>
+<code style="color:white;">
+SFI - Sum of the Sun's Radiation Output<br />
+70	-- Too low<br />
+80	-- Good<br />
+90	-- Better<br />
+100+	-- Best<br />
+<br />
+A-Index - Daily Average of Geo-Magnetic Activity<br />
+A = 	0 - 7  	Quiet<br />
+A = 	8 - 15  	Unsettled<br />
+A = 	16 - 29  	Active<br />
+A = 	30 - 49  	Minor Storm<br />
+A = 	50 - 99  	Major Storm<br />
+A = 	100 - 400  	Severe Storm<br />
+<br />
+K-Index - updated every 3 Hours<br />
+K = 0     Inactive<br />
+K = 1     Very quiet<br />
+K = 2     Quiet<br />
+K = 3     Unsettled<br />
+K = 4     Active<br />
+K = 5     Minor storm<br />
+K = 6     Major storm<br />
+K = 7     Severe storm<br />
+K = 8     Very severe storm<br />
+K = 9     Extremely severe storm<br />
+</code>
+</pre>
+</p>
+</div>
+
+
+<script>
+// this script needs to be AFTER the N0NBH divs 
+function getOrientation() {
+    return window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+}
+
+function handleOrientationChange() {
+    const orientation = getOrientation();
+    console.log("Current orientation:", orientation);
+    // hide / display Vertical & Horiz radio info
+    if (screen.orientation.type.startsWith('portrait')) {
+        document.getElementById('N0NBHimageH').style.display = 'none';
+        document.getElementById('N0NBHimageV').style.display = 'inline';
+    } else {
+        document.getElementById('N0NBHimageH').style.display = 'inline';
+        document.getElementById('N0NBHimageV').style.display = 'none';
+    }
+}
+    
+// Initial check
+handleOrientationChange();
+
+// Listen for orientation changes (resize event)
+window.addEventListener("resize", handleOrientationChange);
+</script>// this script needs to be AFTER the N0NBH divs 
+
 <script>
 
 function showTimes() {
