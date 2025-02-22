@@ -3,7 +3,7 @@ Simple clock displays UTC and Local Time on android phone
 
 This is an just html page that uses JavaScript to display the UTC time along with Local Time and date.
 
-That's it.
+That's it. (well actually, the latest also shows solar info from N0NBH's HamQSL.com)
 
 It scales sorta-kinda, so you can put it on a tablet (untested) or laptop or turn the phone over to landscape if you need larger numbers.
 
