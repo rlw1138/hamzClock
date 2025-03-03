@@ -8,106 +8,146 @@
 	<!-- solar data image by Paul L Herrman N0NBH https://www.hamqsl.com-->
 	<!-- made with DroidScript on a Google Pixel 3A running LineageOS 22 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<style>
-		/* BASE SIZES for vertical phone*/
-		body { font-size: 12px; font-family: Arial, Helvetica, sans-serif;}
-		.clockUTC { font-size: 146px; line-height: 110px; }
-		.clockLocal { font-size: 86px; line-height: 80px; }
-		.firstline { line-height: 6px; }
-		.lastline { font-size: 1em; line-height: 1px } /*size same as body*/
+	<script>
+	    let DeBuG = false;
+	    if (DeBuG) {console.log('debugging is ON"');}
+	</script>
 
+	<style>
+		/* BASE SIZES for vertical phone */
+		body { font-size: 12px; font-family: Arial, Helvetica, sans-serif;}
+		.upperClock { font-size: 146px; line-height: 0.88em; }
+		.lowerClock { font-size: 90px; line-height: 0.9em; }
+		.labelUTC { font-size: 12px; line-height: 0.5em; }
+		.labelLocal { font-size: 12px; line-height: 0.5em; } 
+		
 		/* Media query for wider screens (rotated phone) */
 		@media screen and (min-width: 600px) {
 			body { font-size: 14px; }
-			.clockUTC { font-size: 196px; line-height: 130px; }
-			.clockLocal { font-size: 126px; line-height: 110px; }
-			.firstline { line-height: 8px; }
-			.lastline { font-size: 1em; line-height: 1px } /*size same as body*/
+			.upperClock { font-size: 200px; line-height: 0.8em; }
+			.lowerClock { font-size: 126px; line-height: 0.82em; }
+			.labelUTC { font-size: 14px; line-height: 0.5em; }
+			.labelLocal { font-size: 14px; line-height: 0.5em; }
 		}
 
 		/* Media query for wider screens (laptop/desktop) */
 		@media screen and (min-width: 900px) {
 			body { font-size: 18px; }
-			.clockUTC { font-size: 300px; font-weight: bold; line-height: 0.8em; }
-			.clockLocal { font-size: 2000x; font-weight: bold; line-height: 120px; }
-			.firstline { line-height: 8px; }
-			.lastline { font-size: 1em; line-height: 1px } /*size same as body*/
+			.upperClock { font-size: 300px; font-weight: bold; line-height: 0.8em; }
+			.lowerClock { font-size: 190px; font-weight: bold; line-height: 0.82em; }
+			.labelUTC { font-size: 18px; line-height: 0.5em; }
+			.labelLocal { font-size: 18px; line-height: 0.5em; }
 		}
 
 
 		/* Media queries for Light / Dark color mode */
-		
-		@media (prefers-color-scheme: dark) { 
-			body { background-color: black; }
+
+		@media (prefers-color-scheme: dark) {
+			body { background-color: black; color: white; }
 			p { color: white; }
-			.clockUTC { color: green; }
-			.clockLocal { color: red; }
+			.colorUTC { color: red ; }
+			.colorLocal { color: green; }
+			.colorGood {color:limegreen;}
+			.colorMeh {color:yellow;}
+			.colorBad {color:red;}
+			.line { border-bottom:2px solid white;}
 		}
-		
+
 		@media (prefers-color-scheme: light) {
-			body { background-color: white; }
+			body { background-color: white; color: black; }
 			p { color: black; }
-			.clockUTC { color: blue; }
-			.clockLocal { color: orange; }
+			.colorUTC { color: blue; }
+			.colorLocal { color: orange; }
+			.colorGood {color:green;}
+			.colorMeh {color:orange;}
+			.colorBad {color:red;}
+			.line { border-bottom:2px solid black;}
 		}
 
+		.vspace {
+			margin-bottom:20px;
+		}
 
-		/* the Timer and Brite/Dim button padding: 5px 12px; */
+		/* the Timer and Brite/Dim button */
 		.button {
 		  background-color: #5c2514;
-		  border: none;
+		  border: 2px #5c2514;
+		  border-radius: 5px;
 		  color: white;
 		  text-align: center;
 		  text-decoration: none;
 		  display: inline-block;
 		  font-size: 11px;
-		  margin: 4px 2px;
+		  margin: 4px 0; /* L/R & top/bottom */
 		  height: 20px;
 		  cursor: pointer;
 		}
-		
-		/* put the button on the same line as the Date */
+
+		/* put the button on the same baseline as the Date */
 		.d-table { display:table; }
-
 		.d-table-cell { display:table-cell; }
-
 		.w-100 { width: 100%; }
-
 		.tar { text-align: right; }
 
-
+		/* HR with button to the right (Swap button) */
+		.line { position:relative; height:3px; }
+		.line span { display:inline-block; position:relative; bottom:0.7em; height:100%; }
+		.line .flip { position:absolute; right:0; }
 	</style>
 
 </head>
 
 <body>
 <a id="scrollTOP"></a>
-<p class="firstline"><br />UTC -- coordinated universal time</p>
-<div id="clockUTC" class="clockUTC"></div>
-<hr>
-<div id="clockLocal" class="clockLocal"></div>
 
-<a id="scrollTo"></a>
-<div class="d-table w-100">
-	<p class="lastline d-table-cell">Local time -- <span id="dayndate"></span></p>
-	<div class="d-table-cell tar">
-		<button class="button" id="counter" style="width:40px;text-align:"center";" title="Ten Minute timer" onclick="countDown(600)"  >Timer</button> &nbsp;
-		<button class="button" id="briteDim" onclick="imgBriteDim()">Brite/Dim</button>
+<div id="upperArea">
+	<div class="d-table w-100">
+		<div id="upperLabel">
+			<p id="idUTC" class="labelUTC d-table-cell"><br />UTC -- coordinated universal time</p>
+		</div>
+		<div class="d-table-cell tar">
+			 &nbsp; <!-- down below, this div has buttons -->
+			 &nbsp; 
+		</div>
 	</div>
+	<div id="upperContainer" class="upperClock">
+		<div id="clockUTC" class="colorUTC"></div>
+	</div>
+</div><!-- upperArea -->
+
+<div class="line">
+    <span class="flip"><button class="button" onclick="swapClocks()">Swap</button></span>
 </div>
 
+<div id="lowerArea">
+	<div id="lowerContainer" class="lowerClock">
+		<div id="clockLocal" class="colorLocal"></div>
+	</div>
+	<a id="scrollTo"></a>
+	<div class="d-table w-100">
+		<div id="lowerLabel">
+			<p id="idLocal" class="labelLocal d-table-cell">Local time -- <span id="dayndate"></span></p>
+		</div>
+		<div class="d-table-cell tar">
+			<button class="button" id="counter" style="width:40px;text-align:"center";" title="Ten Minute timer" onclick="countDown(600)">Timer</button> &nbsp;
+			<button class="button" id="briteDim" onclick="imgBriteDim()">Brite/Dim</button>
+		</div>
+	</div>
+</div><!-- lowerArea -->
+
+<div id="vSpace" class='vspace'></div>
+
 <div id="N0NBHimageV"><center>
-<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarn0nbh.php"></a>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solarn0nbh.php" width=90%></a>
 </center></div>
 
 <div id="N0NBHimageH"><center>
-<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhfpic.php"></a>
+<a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!"><img src="https://www.hamqsl.com/solar101vhfpic.php" width=90%></a>
 </center></div>
 
-<p><span style="color:limegreen;">Good</span>&nbsp;<span style="color:yellow;">meh</span>&nbsp;<span style="color:red;">Bad</span></p>
+<p><span class="colorGood">Good</span>&nbsp;<span class="colorMeh">meh</span>&nbsp;<span class="colorBad">Bad</span></p>
 
-<div align="left"><p><pre><code style="color:white;">
+<div align="left"><p><pre><code>
 SFI - Sum of the Sun's Radiation Output<br />
 70	-- Too low<br />
 80	-- Good<br />
@@ -135,9 +175,46 @@ K = 8	 Very severe storm<br />
 K = 9	 Extremely severe storm<br />
 </code></pre></p></div>
 
+<button onclick="showAbout()">About hamzClock</button>
 
 <script type="text/javascript">
 /* don't change the order of most of these */
+function showAbout() {
+const aboutText = "hamzClock -- UTC / Local clock\n(c) 2025 Russ Williams, AD9FK\nrlw1138 {at} hotMail {dot} com\n"
+	alert(aboutText);
+}
+
+function swapClocks() {
+
+	id = document.getElementById("clockUTC").parentNode.id;
+	const ClockUTC = document.getElementById('clockUTC');
+	const ClockLocal = document.getElementById('clockLocal');
+	
+	ClockUTC.innerText = "";
+	ClockLocal.innerText = "";
+
+	const UpperContainer = document.getElementById('upperContainer');
+	const LowerContainer = document.getElementById('lowerContainer');
+	const UpperLabel = document.getElementById('upperLabel');
+	const LowerLabel = document.getElementById('lowerLabel');
+	const IdUTC = document.getElementById('idUTC');
+	const IdLocal = document.getElementById('idLocal');
+
+	if ( id == "upperContainer") {
+		UpperLabel.appendChild(IdLocal);
+		UpperContainer.appendChild(ClockLocal);
+		LowerContainer.appendChild(ClockUTC);
+		LowerLabel.appendChild(IdUTC);
+	} else {
+		UpperLabel.appendChild(IdUTC);
+		UpperContainer.appendChild(ClockUTC);
+		LowerContainer.appendChild(ClockLocal);
+		LowerLabel.appendChild(IdLocal);
+
+	}
+	showTimes();
+}
+
 
 
 function countDown(duration) {
@@ -150,7 +227,7 @@ function countDown(duration) {
 
 	// Change onclick to a new function, to be ready for 'second click'
 	timerButton.onclick = function() {
-		console.log('New onclick function executed!');
+		if (DeBuG) {console.log('New onclick function executed!');}
 		// Add your desired functionality here
 		killFlag = 1;
 		// revert the button style back 
@@ -167,8 +244,7 @@ function countDown(duration) {
 	timer = setTimeout(update, 1000);
 	//this allows for 'clearTimeout' if needed
 	
-	function update()
-	{
+	function update() {
 		if (killFlag) {
 			killFlag = 0;
 			return;
@@ -181,7 +257,7 @@ function countDown(duration) {
 			seconds = (seconds < 10) ? "0" + seconds : seconds;
 			time = minutes + ":" + seconds;
 			timerButton.innerText = time;
-			// console.log('#", count, ' min:', minutes, ' sec:', seconds);
+			if (DeBuG) {console.log('#', count, ' min:', minutes, ' sec:', seconds);}
 			timer = setTimeout(update, 1000);
 		} else {
 			//alert("Done!!!");
@@ -189,6 +265,8 @@ function countDown(duration) {
 			timerButton.style.height = "40px";
 			timerButton.style.background = "yellow";
 			timerButton.style.color = "black";
+			timerButton.style.border = "solid #000000 1px";
+			timerButton.style.borderRadius = "6px";
 			timerButton.innerText = "Call\nSign";
 			beep(440, 2500);
 			var element_to_scroll_to = document.getElementById('scrollTOP');
@@ -244,7 +322,7 @@ function getOrientation() {
 
 function handleOrientationChange() {
 	const orientation = getOrientation();
-	console.log("Current orientation:", orientation);
+	if (DeBuG) {console.log("Current orientation:", orientation);}
 	// hide / display Vertical & Horiz radio info graphic
 	if (screen.orientation.type.startsWith('portrait')) {
 		document.getElementById('N0NBHimageH').style.display = 'none';
@@ -288,6 +366,7 @@ function showTimes() {
 	let minutes = now.getMinutes();
 	let seconds = now.getSeconds();
 	let hoursUTC = now.getUTCHours();
+	let minutesUTC = now.getUTCMinutes();
 
 	if (hours > 23) { hours = hours - 24; }
 	if (hoursUTC > 23) { hoursUTC = hoursUTC - 24; }
@@ -296,10 +375,21 @@ function showTimes() {
 	minutes = (minutes < 10) ? "0" + minutes : minutes;
 	seconds = (seconds < 10) ? "0" + seconds : seconds;
 	hoursUTC = (hoursUTC < 10) ? "0" + hoursUTC : hoursUTC;
-
-	const timeUTC = hoursUTC + ":" + minutes;
-	const timeLocal = hours + ":" + minutes + ":" + seconds;
-   
+	
+	var timeUTC = hoursUTC + ":" + minutes;
+	var timeLocal = hours + ":" + minutes;
+	
+	const child = document.getElementById("clockUTC");
+	const parent = document.getElementById(child.parentNode.id);
+	const grandparent = document.getElementById(parent.parentNode.id);
+	if (DeBuG) {console.log("parent=", parent.id, "=  Gparent=", grandparent.id,"=");}
+	
+	if ( grandparent.id == "upperArea") {
+		timeLocal = timeLocal + ":" + seconds;
+	} else {
+		timeUTC = timeUTC + ":" + seconds;
+	}
+	   
 	document.getElementById("clockUTC").innerText = timeUTC;
 	document.getElementById("clockLocal").innerText = timeLocal;
 	document.getElementById("dayndate").innerText = dayOfWeek +", "+ date;
@@ -320,9 +410,9 @@ function isMobile() {
 	};
 
 if (isMobile()) {
-	console.log("This is mobile device");
+	if (DeBuG) {console.log("This is mobile device");}
 } else {
-	console.log("This is NOT mobile device");
+	if (DeBuG) {console.log("This is NOT mobile device");}
 }
 
 
@@ -336,9 +426,9 @@ function isMobileTablet(){
 	}
 	
 if (isMobileTablet()) {
-	console.log("This is touchscreen device");
+	if (DeBuG) {console.log("This is touchscreen device");}
 } else {
-	console.log("This is NOT touchscreen device");
+	if (DeBuG) {console.log("This is NOT touchscreen device");}
 }
 
 
@@ -347,15 +437,16 @@ if (isMobileTablet()) {
 function updateDimensions() {
 	let screenWidth = window.innerWidth;
 	let screenHeight = window.innerHeight;
-	console.log("Screen Width: ", screenWidth, " Screen Height: ", screenHeight);
+	if (DeBuG) {console.log("Screen Width: ", screenWidth, " Screen Height: ", screenHeight);}
 	// Perform actions based on orientation, e.g., adjust layout
 }
 
 updateDimensions(); // Initial check
 
-// Listen for orientation changes (resize event)
-window.addEventListener("resize", updateDimensions);
+// Un-Comment to Listen for orientation changes (resize event)
+//window.addEventListener("resize", updateDimensions);
 
 </script>
+<br /><br /><br /><br />
 </body>
 </html>
