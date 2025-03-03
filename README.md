@@ -7,10 +7,7 @@ That's it. (well actually, the latest also shows solar info from N0NBH's HamQSL.
 
 It scales sorta-kinda, so you can put it on a tablet (untested) or laptop or turn the phone over to landscape if you need larger numbers.
 
-![hamzClock portrait](https://github.com/user-attachments/assets/2a54c2a1-e60b-4785-abe9-a40e3ff207a8) ![hamzClock landscape](https://github.com/user-attachments/assets/116ef47d-94e3-4334-8a1a-405b0faa6a40) ![PXL_20250302_003222431](https://github.com/user-attachments/assets/1d535bb7-46d7-4256-90ca-e0d098a8681e)
-
-
-
+![hamzClock screens](https://github.com/user-attachments/assets/ec4349c1-05bd-48eb-81f6-f8a87cdf7f23)
 
 
 There's an APK to install on an android, and I pulled the HTML out if you want to just copy to a folder and look at it in a browser. The SPK file is also there, but I don't know what it's good for.
